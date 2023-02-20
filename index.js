@@ -17,8 +17,9 @@ const { dummyCategory } = require("./database/models/Category");
 const { dummyFavourite } = require("./database/models/Favourite");
 const { ObjectId } = require("mongodb");
 const { LikeSchema } = require("./database/models/Like");
-
+const cors = require("cors");
 const app = express();
+app.use(cors("*"));
 app.use(bodyParser.json());
 app.use(fileupload());
 app.use(express.static("files"));
@@ -92,6 +93,14 @@ app.get("/users", async (req, res) => {
   res.json({ users: users });
 });
 
+app.get("/", async (req, res) => {
+  const users = await UserModel.find({});
+  res.json({ users: users });
+});
+app.post("/", async (req, res) => {
+  const users = await UserModel.find({});
+  res.json({ users: users, body: req.body });
+});
 app.get("/admin/collection/:id", async (req, res) => {
   const users = await UserModel.find({ _id: req.params.id });
   res.json({ users: users });
